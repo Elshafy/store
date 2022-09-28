@@ -19,13 +19,27 @@ class ItemRequest extends FormRequest
 
     /**
      * Get the validation rules that apply to the request.
-     *
+     *$table->foreignId('category_id')->constrained()->cascadeOnDelete();
+            $table->string ('name')->unique();
+            $table->string('code');
+            $table->integer('min');
+            $table->integer('amount');
+            $table->float('price');
+            $table->string('image');
+            $table->boolean('active')->default(false);
      * @return array
      */
     public function rules()
     {
         return [
-            // 'name' => 'required|min:5|max:255'
+            'name' => 'required|min:5|max:255',
+            'code' => 'required|min:5|max:255',
+
+            'amount' => 'required|integer',
+            'price' => 'required|numeric',
+            'image' => 'required|image',
+            'active' => 'required|boolean'
+
         ];
     }
 

@@ -21,7 +21,7 @@ class ItemCrudController extends CrudController
 
     /**
      * Configure the CrudPanel object. Apply settings to all operations.
-     * 
+     *
      * @return void
      */
     public function setup()
@@ -33,7 +33,7 @@ class ItemCrudController extends CrudController
 
     /**
      * Define what happens when the List operation is loaded.
-     * 
+     *
      * @see  https://backpackforlaravel.com/docs/crud-operation-list-entries
      * @return void
      */
@@ -45,7 +45,15 @@ class ItemCrudController extends CrudController
         CRUD::column('min');
         CRUD::column('amount');
         CRUD::column('price');
-        CRUD::column('image');
+        CRUD::addColumn([
+            'name'      => 'image', // The db column name
+            'label'     => 'image', // Table column heading
+            'type'      => 'image',
+            'height' => '30px',
+            'width'  => '30px',
+            'prefix' => 'uploads/',
+
+        ]);
         CRUD::column('active');
         CRUD::column('created_at');
         CRUD::column('updated_at');
@@ -53,39 +61,46 @@ class ItemCrudController extends CrudController
         /**
          * Columns can be defined using the fluent syntax or array syntax:
          * - CRUD::column('price')->type('number');
-         * - CRUD::addColumn(['name' => 'price', 'type' => 'number']); 
+         * - CRUD::addColumn(['name' => 'price', 'type' => 'number']);
          */
     }
 
     /**
      * Define what happens when the Create operation is loaded.
-     * 
+     *
      * @see https://backpackforlaravel.com/docs/crud-operation-create
      * @return void
      */
     protected function setupCreateOperation()
     {
         CRUD::setValidation(ItemRequest::class);
-
+        $this->crud->removeColumn('image');
         CRUD::field('category_id');
         CRUD::field('name');
         CRUD::field('code');
         CRUD::field('min');
         CRUD::field('amount');
         CRUD::field('price');
-        CRUD::field('image');
+        CRUD::addField([
+            'name'      => 'image',
+            'label'     => 'image',
+            'type'      => 'upload',
+            'upload'    => true,
+            'disk'   => 'uploads',
+
+        ]);
         CRUD::field('active');
 
         /**
          * Fields can be defined using the fluent syntax or array syntax:
          * - CRUD::field('price')->type('number');
-         * - CRUD::addField(['name' => 'price', 'type' => 'number'])); 
+         * - CRUD::addField(['name' => 'price', 'type' => 'number']));
          */
     }
 
     /**
      * Define what happens when the Update operation is loaded.
-     * 
+     *
      * @see https://backpackforlaravel.com/docs/crud-operation-update
      * @return void
      */
