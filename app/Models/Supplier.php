@@ -9,4 +9,8 @@ class Supplier extends Model
 {
     use \Backpack\CRUD\app\Models\Traits\CrudTrait;
     use HasFactory;
+    public function getActiveAttribute($value)
+    {
+        return $value ? "active" : "pending";
+    }
 }

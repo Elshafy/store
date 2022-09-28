@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Requests\ItemRequest;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
+use Illuminate\Validation\Rule;
 
 /**
  * Class ItemCrudController
@@ -106,6 +107,16 @@ class ItemCrudController extends CrudController
      */
     protected function setupUpdateOperation()
     {
+        $entry = $this->crud->getCurrentEntry();
+        CRUD::setValidation([
+            'name' => ['required', Rule::unique('items', 'name')->ignore($entry)],
+            'code' => 'required|min:5|max:255',
+            'amount' => 'required|integer',
+            'price' => 'required|numeric',
+            'image' => 'required|image',
+            'active' => 'required|boolean'
+
+        ]);
         $this->setupCreateOperation();
     }
 }
