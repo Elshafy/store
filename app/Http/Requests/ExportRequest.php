@@ -25,7 +25,11 @@ class ExportRequest extends FormRequest
     public function rules()
     {
         return [
-            // 'name' => 'required|min:5|max:255'
+            'amount' => 'required|integer',
+            'item_id' => 'required|integer',
+            'customer_id' => 'required|integer',
+
+
         ];
     }
 

@@ -3,8 +3,10 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Requests\ItemRequest;
+use App\Models\Item;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Validation\Rule;
 
 /**
@@ -30,6 +32,7 @@ class ItemCrudController extends CrudController
         CRUD::setModel(\App\Models\Item::class);
         CRUD::setRoute(config('backpack.base.route_prefix') . '/item');
         CRUD::setEntityNameStrings('item', 'items');
+        Gate::authorize('editItem', Item::class);
     }
 
     /**
@@ -40,6 +43,10 @@ class ItemCrudController extends CrudController
      */
     protected function setupListOperation()
     {
+        if (backpack_user()->can('changeState')) {
+            $this->crud->addButtonFromView('line', 'changeStateItem', "button", 'changeStateItem', 'beginning');
+        }
+        // $this->crud->addButton('line', 'changeStateItem', 'changeStateItem', 'beginning');
         CRUD::column('category_id');
         CRUD::column('name');
         CRUD::column('code');
@@ -95,7 +102,7 @@ class ItemCrudController extends CrudController
             'disk'   => 'uploads',
 
         ]);
-        CRUD::field('active');
+        // CRUD::field('active');
 
         /**
          * Fields can be defined using the fluent syntax or array syntax:
@@ -119,9 +126,17 @@ class ItemCrudController extends CrudController
             'amount' => 'required|integer',
             'price' => 'required|numeric',
             'image' => 'image',
-            'active' => 'required|boolean'
+            // 'active' => 'required|boolean'
 
         ]);
         $this->setupCreateOperation();
+    }
+    public function changeState($id)
+    {
+        Gate::authorize('activeItem', Item::class);
+        $item =  Item::find($id);
+        $item->active = !$item->active;
+        $item->save();
+        return back();
     }
 }

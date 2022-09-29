@@ -23,7 +23,7 @@ class ItemRequest extends FormRequest
             'amount' => 'required|integer',
             'price' => 'required|numeric',
             'image' => 'required|image',
-            'active' => 'required|boolean'
+            // 'active' => 'required|boolean'
 
         ];
     }

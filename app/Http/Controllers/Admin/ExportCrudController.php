@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Requests\ExportRequest;
+use App\Models\Export;
+use App\Models\Item;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
 
@@ -21,6 +23,13 @@ class ExportCrudController extends CrudController
         CRUD::setModel(\App\Models\Export::class);
         CRUD::setRoute(config('backpack.base.route_prefix') . '/export');
         CRUD::setEntityNameStrings('export', 'exports');
+
+        //! adjest amount in the table items  after creat and update an import record
+        Export::created(function ($entry) {
+            $item = Item::find($entry->item_id);
+            $item->amount =  $item->amount - $entry->amount;
+            $item->save();
+        });
     }
 
 
