@@ -40,7 +40,12 @@ class CustomerCrudController extends CrudController
      */
     protected function setupListOperation()
     {
-        CRUD::column('active');
+        CRUD::addColumn([
+            'label'   => 'active',
+            'name'    => 'active',
+            'type'    => 'boolean',
+            'options' => [true => 'active', false => 'pendding'],
+        ]);
         CRUD::column('name');
         CRUD::column('email');
         CRUD::column('phone');

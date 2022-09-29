@@ -21,7 +21,7 @@ class UserCrudController extends CrudController
 
     /**
      * Configure the CrudPanel object. Apply settings to all operations.
-     * 
+     *
      * @return void
      */
     public function setup()
@@ -33,7 +33,7 @@ class UserCrudController extends CrudController
 
     /**
      * Define what happens when the List operation is loaded.
-     * 
+     *
      * @see  https://backpackforlaravel.com/docs/crud-operation-list-entries
      * @return void
      */
@@ -41,18 +41,41 @@ class UserCrudController extends CrudController
     {
         CRUD::column('name');
         CRUD::column('email');
-        CRUD::column('password');
+        // CRUD::column('password');
+        CRUD::addColumn(
+            [
+                // n-n relationship (with pivot table)
+                'label'     => 'roles', // Table column heading
+                'type'      => 'select_multiple',
+                'name'      => 'roles', // the method that defines the relationship in your Model
+                'entity'    => 'roles', // the method that defines the relationship in your Model
+                'attribute' => 'name', // foreign key attribute that is shown to user
+                'model'     => "Backpack\PermissionManager\app\Models\Role", // foreign key model
+            ],
+
+            // [   // Checklist
+            //     'label'     => 'Roles',
+            //     'type'      => 'checklist',
+            //     'name'      => 'roles',
+            //     'entity'    => 'roles',
+            //     'attribute' => 'name',
+            //     'model'     => "Backpack\PermissionManager\app\Models\Role",
+            //     'pivot'     => true,
+            //     // 'number_of_columns' => 3,
+            // ],
+        );
+
 
         /**
          * Columns can be defined using the fluent syntax or array syntax:
          * - CRUD::column('price')->type('number');
-         * - CRUD::addColumn(['name' => 'price', 'type' => 'number']); 
+         * - CRUD::addColumn([   // Checklist
          */
     }
 
     /**
      * Define what happens when the Create operation is loaded.
-     * 
+     *
      * @see https://backpackforlaravel.com/docs/crud-operation-create
      * @return void
      */
@@ -62,18 +85,28 @@ class UserCrudController extends CrudController
 
         CRUD::field('name');
         CRUD::field('email');
-        CRUD::field('password');
+        // CRUD::field('password');
+        CRUD::addField([   // Checklist
+            'label'     => 'Roles',
+            'type'      => 'checklist',
+            'name'      => 'roles',
+            'entity'    => 'roles',
+            'attribute' => 'name',
+            'model'     => "Backpack\PermissionManager\app\Models\Role",
+            'pivot'     => true,
+            'number_of_columns' => 3,
+        ],);
 
         /**
          * Fields can be defined using the fluent syntax or array syntax:
          * - CRUD::field('price')->type('number');
-         * - CRUD::addField(['name' => 'price', 'type' => 'number'])); 
+         * - CRUD::addField(['name' => 'price', 'type' => 'number']));
          */
     }
 
     /**
      * Define what happens when the Update operation is loaded.
-     * 
+     *
      * @see https://backpackforlaravel.com/docs/crud-operation-update
      * @return void
      */

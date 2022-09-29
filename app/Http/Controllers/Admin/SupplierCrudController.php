@@ -40,7 +40,12 @@ class SupplierCrudController extends CrudController
      */
     protected function setupListOperation()
     {
-        CRUD::column('active');
+        CRUD::addColumn([
+            'label'   => 'active',
+            'name'    => 'active',
+            'type'    => 'boolean',
+            'options' => [true => 'active', false => 'pendding'],
+        ]);
         CRUD::column('name');
         CRUD::column('email');
         CRUD::column('phone');
@@ -89,7 +94,7 @@ class SupplierCrudController extends CrudController
 
             'name' => 'required|min:3|max:255',
             'phone' => 'required|min:9|max:255',
-            'email' => ['required', Rule::unique('supplier', 'email')->ignore($entry)],
+            'email' => ['required', Rule::unique('suppliers', 'email')->ignore($entry)],
             'active' => 'required|boolean'
 
         ]);

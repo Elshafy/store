@@ -22,4 +22,5 @@ Route::group([
     Route::crud('import', 'ImportCrudController');
     Route::crud('item', 'ItemCrudController');
     Route::crud('supplier', 'SupplierCrudController');
+    Route::crud('user', 'UserCrudController');
 }); // this should be the absolute last line of this file
