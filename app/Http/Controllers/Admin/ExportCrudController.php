@@ -6,11 +6,7 @@ use App\Http\Requests\ExportRequest;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
 
-/**
- * Class ExportCrudController
- * @package App\Http\Controllers\Admin
- * @property-read \Backpack\CRUD\app\Library\CrudPanel\CrudPanel $crud
- */
+
 class ExportCrudController extends CrudController
 {
     use \Backpack\CRUD\app\Http\Controllers\Operations\ListOperation;
@@ -19,11 +15,7 @@ class ExportCrudController extends CrudController
     use \Backpack\CRUD\app\Http\Controllers\Operations\DeleteOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\ShowOperation;
 
-    /**
-     * Configure the CrudPanel object. Apply settings to all operations.
-     *
-     * @return void
-     */
+
     public function setup()
     {
         CRUD::setModel(\App\Models\Export::class);
@@ -31,54 +23,56 @@ class ExportCrudController extends CrudController
         CRUD::setEntityNameStrings('export', 'exports');
     }
 
-    /**
-     * Define what happens when the List operation is loaded.
-     *
-     * @see  https://backpackforlaravel.com/docs/crud-operation-list-entries
-     * @return void
-     */
+
     protected function setupListOperation()
     {
-        CRUD::column('item_id');
+        // CRUD::column('item_id');
         CRUD::column('customer_id');
+        CRUD::addColumn([
+
+            'label'     => 'item',
+            'type'      => 'select',
+            'name'      => 'item_id',
+            'entity'    => 'item',
+            'attribute' => 'name',
+            'model'     => "App\Models\Item",
+        ],);
         CRUD::column('amount');
         CRUD::column('created_at');
         CRUD::column('updated_at');
-
-        /**
-         * Columns can be defined using the fluent syntax or array syntax:
-         * - CRUD::column('price')->type('number');
-         * - CRUD::addColumn(['name' => 'price', 'type' => 'number']);
-         */
     }
 
-    /**
-     * Define what happens when the Create operation is loaded.
-     *
-     * @see https://backpackforlaravel.com/docs/crud-operation-create
-     * @return void
-     */
     protected function setupCreateOperation()
     {
         CRUD::setValidation(ExportRequest::class);
 
-        CRUD::field('item_id');
-        CRUD::field('customer_id');
-        CRUD::field('amount');
 
-        /**
-         * Fields can be defined using the fluent syntax or array syntax:
-         * - CRUD::field('price')->type('number');
-         * - CRUD::addField(['name' => 'price', 'type' => 'number']));
-         */
+        CRUD::field('amount');
+        CRUD::addField([  // Select
+            'label'     => "item",
+            'type'      => 'select',
+            'name'      => 'item_id',
+            'entity'    => 'item',
+            'model'     => "App\Models\Item",
+            'attribute' => 'name',
+            'options'   => (function ($query) {
+                return $query->where('active', true)->get();
+            })
+        ],);
+        CRUD::addField([  // Select
+            'label'     => "customer",
+            'type'      => 'select',
+            'name'      => 'customer_id',
+            'entity'    => 'customer',
+            'model'     => "App\Models\Customer",
+            'attribute' => 'name',
+            'options'   => (function ($query) {
+                return $query->where('active', true)->get();
+            }),
+        ],);
     }
 
-    /**
-     * Define what happens when the Update operation is loaded.
-     *
-     * @see https://backpackforlaravel.com/docs/crud-operation-update
-     * @return void
-     */
+
     protected function setupUpdateOperation()
     {
 

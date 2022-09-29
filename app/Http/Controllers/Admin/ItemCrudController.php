@@ -55,7 +55,12 @@ class ItemCrudController extends CrudController
             'prefix' => 'uploads/',
 
         ]);
-        CRUD::column('active');
+        CRUD::addColumn([
+            'label'   => 'active',
+            'name'    => 'active',
+            'type'    => 'boolean',
+            'options' => [true => 'active', false => 'pendding'],
+        ]);
         CRUD::column('created_at');
         CRUD::column('updated_at');
 
@@ -113,7 +118,7 @@ class ItemCrudController extends CrudController
             'code' => 'required|min:5|max:255',
             'amount' => 'required|integer',
             'price' => 'required|numeric',
-            'image' => 'required|image',
+            'image' => 'image',
             'active' => 'required|boolean'
 
         ]);
