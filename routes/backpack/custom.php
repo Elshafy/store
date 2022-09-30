@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\ReportController;
 use App\Models\Item;
 use Illuminate\Support\Facades\Route;
 
@@ -7,6 +8,10 @@ use Illuminate\Support\Facades\Route;
 // Custom Backpack Routes
 // --------------------------
 // This route file is loaded automatically by Backpack\Base.
+//  api route
+Route::get('api/customer/{id}', [ReportController::class, 'customerRecord']);
+Route::get('api/supplier/{id}', [ReportController::class, 'supplierRecord']);
+
 // Routes you generate using Backpack\Generators will be placed here.
 
 Route::group([

@@ -43,7 +43,7 @@ class DatabaseSeeder extends Seeder
         DB::table('suppliers')->insert([
             'name' => Str::random(10),
             'email' => Str::random(10) . '@gmail.com',
-            'phone' => Hash::make('password'),
+            'phone' => Str::random(10),
         ]);
         DB::table('customers')->insert([
             'name' => Str::random(10),
