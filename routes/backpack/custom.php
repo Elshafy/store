@@ -9,8 +9,8 @@ use Illuminate\Support\Facades\Route;
 // --------------------------
 // This route file is loaded automatically by Backpack\Base.
 //  api route
-Route::get('api/customer/{id}', [ReportController::class, 'customerRecord']);
-Route::get('api/supplier/{id}', [ReportController::class, 'supplierRecord']);
+// Route::get('api/customer/{id}', [ReportController::class, 'customerRecord']);
+// Route::get('api/supplier/{id}', [ReportController::class, 'supplierRecord']);
 
 // Routes you generate using Backpack\Generators will be placed here.
 
