@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Api\ReportController;
 use App\Models\Item;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Route;
 
 // --------------------------
@@ -22,6 +23,8 @@ Route::group([
     ),
     'namespace'  => 'App\Http\Controllers\Admin',
 ], function () { // custom admin routes
+
+    // App::setLocale(backpack_user()->lang);
     Route::crud('category', 'CategoryCrudController');
     Route::crud('customer', 'CustomerCrudController');
     Route::crud('export', 'ExportCrudController');
