@@ -20,8 +20,7 @@ class ItemPolicy
     }
     public function editItem(User $user)
     {
-        // return backpack_user()->can('edit-item');
-        return true;
+        return backpack_user()->can('edit-item');
     }
     public function activeItem(User $user)
     {
