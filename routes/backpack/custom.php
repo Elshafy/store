@@ -23,8 +23,10 @@ Route::group([
     ),
     'namespace'  => 'App\Http\Controllers\Admin',
 ], function () { // custom admin routes
+    if (backpack_user()) {
 
-    // App::setLocale(backpack_user()->lang);
+        App::setLocale(backpack_user()->lang);
+    }
     Route::crud('category', 'CategoryCrudController');
     Route::crud('customer', 'CustomerCrudController');
     Route::crud('export', 'ExportCrudController');
