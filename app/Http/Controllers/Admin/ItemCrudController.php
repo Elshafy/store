@@ -77,6 +77,22 @@ class ItemCrudController extends CrudController
          * - CRUD::addColumn(['name' => 'price', 'type' => 'number']);
          */
     }
+    protected function setupShowOperation()
+    {
+        // MAYBE: do stuff before the autosetup
+
+        // automatically add the columns
+        $this->autoSetupShowOperation();
+        $this->crud->removeColumn('image'); // remove a column from the stack
+        CRUD::addColumn([
+            'name'      => 'image', // The db column name
+            'label'     => 'image', // Table column heading
+            'type'      => 'image',
+            'height' => '200px',
+            'prefix' => 'uploads/',
+
+        ]);
+    }
 
     /**
      * Define what happens when the Create operation is loaded.
