@@ -21,7 +21,7 @@ class CreateItemsTable extends Migration
             $table->integer('min');
             $table->integer('amount');
             $table->float('price');
-            $table->string('image');
+            $table->string('image')->nullable();
             $table->boolean('active')->default(false);
 
             $table->timestamps();

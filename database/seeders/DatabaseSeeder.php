@@ -2,6 +2,12 @@
 
 namespace Database\Seeders;
 
+use App\Models\Category;
+use App\Models\Customer;
+use App\Models\Export;
+use App\Models\Import;
+use App\Models\Item;
+use App\Models\Supplier;
 use App\Models\User;
 use Backpack\PermissionManager\app\Models\Permission;
 use Backpack\PermissionManager\app\Models\Role;
@@ -12,40 +18,30 @@ use Illuminate\Support\Str;
 
 class DatabaseSeeder extends Seeder
 {
-    /**
-     * Seed the application's database.
-     *
-     * @return void
-     */
     public function run()
     {
-        // $this->call([
-
-        //     UserSeeder::class,
-
-        // ]);
-        // User::truncate();
-
-        // // Create admin
-        // User::create([
-        //     'name'     => 'Demo Admin',
-        //     'email'    => 'admisna@example.com',
-        //     'password' => bcrypt('admin'),
-        // ]);
-
-        // User::factory(10)->create();
         $admin = User::create([
             'name'     => 'Demo Admin',
-            'email'    => 'admisna@example.com',
+            'email'    => 'admin@gmail.com',
             'password' => bcrypt('admin'),
         ]);
         User::factory(10)->create();
-        DB::table('suppliers')->insert([
+        $supplier = Supplier::create([
             'name' => Str::random(10),
             'email' => Str::random(10) . '@gmail.com',
             'phone' => Str::random(10),
         ]);
-        DB::table('customers')->insert([
+        $supplier1 = Supplier::create([
+            'name' => Str::random(10),
+            'email' => Str::random(10) . '@gmail.com',
+            'phone' => Str::random(10),
+        ]);
+        $customer = Customer::create([
+            'name' => Str::random(10),
+            'email' => Str::random(10) . '@gmail.com',
+            'phone' => Str::random(10),
+        ]);
+        $customer1 = Customer::create([
             'name' => Str::random(10),
             'email' => Str::random(10) . '@gmail.com',
             'phone' => Str::random(10),
@@ -71,5 +67,36 @@ class DatabaseSeeder extends Seeder
         $adminRole->givePermissionTo('changeState');
         $adminRole->givePermissionTo('edit-item');
         $admin->assignRole('admin');
+        $category = Category::factory(2)->create();
+        $items = Item::factory(5)->create(['category_id' => $category[0]]);
+        $items2 = Item::factory(5)->create(['category_id' => $category[1]]);
+
+        for ($i = 0; $i < 5; $i++) {
+
+            Import::factory(4)->create([
+                'item_id' => $items[$i],
+                'supplier_id' => $supplier->id
+            ]);
+        }
+        for ($i = 0; $i < 5; $i++) {
+
+            Import::factory(4)->create([
+                'item_id' => $items2[$i],
+                'supplier_id' => $supplier1->id
+            ]);
+        }
+        for ($i = 0; $i < 5; $i++) {
+            Export::factory(4)->create([
+                'item_id' => $items[$i],
+                'customer_id' => $customer->id
+            ]);
+        }
+
+        for ($i = 0; $i < 5; $i++) {
+            Export::factory(4)->create([
+                'item_id' => $items2[$i],
+                'customer_id' => $customer1->id
+            ]);
+        }
     }
 }
