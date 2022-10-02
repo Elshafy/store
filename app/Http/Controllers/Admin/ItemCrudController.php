@@ -83,17 +83,7 @@ class ItemCrudController extends CrudController
                 'label'        => trans('item.price')
             ]
         );
-        CRUD::addColumn(
-            [
-                'name'      => 'image', // The db column name
-                'label'     => trans('item.image'), // Table column heading
-                'type'      => 'image',
-                'height' => '30px',
-                'width'  => '30px',
-                'prefix' => 'uploads/',
 
-            ]
-        );
         CRUD::addColumn([
             'label'   => 'active',
             'name'    => 'active',
@@ -111,7 +101,20 @@ class ItemCrudController extends CrudController
     }
     protected function setupShowOperation()
     {
+
         $this->setupListOperation();
+        CRUD::removeColumn('image');
+        CRUD::addColumn(
+            [
+                'name'      => 'image', // The db column name
+                'label'     => trans('item.image'), // Table column heading
+                'type'      => 'image',
+                'height' => '200px',
+                'width'  => '200px',
+                'prefix' => 'uploads/',
+
+            ]
+        );
     }
 
 
@@ -132,12 +135,14 @@ class ItemCrudController extends CrudController
         CRUD::addField(['name' => 'amount', 'label' => trans('item.amount')]);
         CRUD::addField([
             'name'      => 'image',
-            'label'     => 'image',
+            'label'     => trans('item.image'),
             'type'      => 'upload',
             'upload'    => true,
             'disk'   => 'uploads',
 
         ]);
+        CRUD::addField(['name' => 'price', 'label' => trans('item.price')]);
+
         // CRUD::field('active');
 
         /**
