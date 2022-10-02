@@ -31,9 +31,9 @@ Route::group([
     Route::crud('customer', 'CustomerCrudController');
     Route::crud('export', 'ExportCrudController');
     Route::crud('import', 'ImportCrudController');
-    Route::middleware(['can:editItem,App\Models\Item'])->group(function () {
-        Route::crud('item', 'ItemCrudController');
-    });
+    // Route::middleware(['can:editItem,App\Models\Item'])->group(function () {
+    // });
+    Route::crud('item', 'ItemCrudController');
     Route::get('item/{id}/changeState', 'ItemCrudController@changeState')->can('activeItem', Item::class);
     Route::crud('supplier', 'SupplierCrudController');
     Route::crud('user', 'UserCrudController');
