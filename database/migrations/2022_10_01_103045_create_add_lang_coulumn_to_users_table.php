@@ -14,7 +14,7 @@ class CreateAddLangCoulumnToUsersTable extends Migration
     public function up()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->text('lang')->default('en');
+            $table->string('lang')->default('en');
         });
     }
 
