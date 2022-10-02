@@ -30,6 +30,27 @@ Widget::add([
         'items' => (new \App\Http\Controllers\WidgetController())->itemWithExportMport(),
     ],
 ]);
+Widget::add([
+    'type' => 'LastMonth',
+    'wrapper' => ['class' => 'col-sm-12'],
+    'content' => [
+        'items' => (new \App\Http\Controllers\WidgetController())->LastMonth(),
+    ],
+]);
+Widget::add([
+    'type' => 'TopImports',
+    'wrapper' => ['class' => 'col-sm-12'],
+    'content' => [
+        'items' => (new \App\Http\Controllers\WidgetController())->TopImports(),
+    ],
+]);
+Widget::add([
+    'type' => 'MinItem',
+    'wrapper' => ['class' => 'col-sm-12'],
+    'content' => [
+        'items' => (new \App\Http\Controllers\WidgetController())->MinItem(),
+    ],
+]);
 @endphp
 
 @section('content')

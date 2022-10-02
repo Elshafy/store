@@ -3,12 +3,10 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Requests\ItemRequest;
-use App\Http\Requests\UpdateItemRequest;
 use App\Models\Item;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
 use Illuminate\Support\Facades\Gate;
-use Illuminate\Validation\Rule;
 
 
 class ItemCrudController extends CrudController
@@ -158,21 +156,7 @@ class ItemCrudController extends CrudController
         );
     }
 
-    /**
-     * Define what happens when the Update operation is loaded.
-     *
-     * @see https://backpackforlaravel.com/docs/crud-operation-update
-     * @return void
-     * [
-            'name' => ['required', Rule::unique('items', 'name')->ignore($entry)],
-            'code' => 'required|min:5|max:255',
-            'amount' => 'required|integer',
-            'price' => 'required|numeric',
-            'image' => 'image',
-            // 'active' => 'required|boolean'
 
-        ]
-     */
     protected function setupUpdateOperation()
     {
         $this->setupCreateOperation();
