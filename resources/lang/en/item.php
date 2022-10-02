@@ -16,6 +16,11 @@ return [
     'price'     => 'en_Price',
     'active'    => 'en_active',
     'image'    => 'en_image',
+    'changeStateItem'    => 'changeStateItem',
 
+    'items'    => ' items',
+    'item'    => ' item',
+    'created'    => 'created',
+    'updated'    => 'updated ',
 
 ];

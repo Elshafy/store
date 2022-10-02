@@ -2,7 +2,7 @@
     data-route="{{ url($crud->route . '/' . $entry->getKey() . '/changeState') }}"
     class="btn btn-sm btn-link text-capitalize" data-button-type="change">
     <i class="la la-question"></i>
-    changeStateItem
+    {{ trans('item.changeStateItem') }}
 </a>
 
 

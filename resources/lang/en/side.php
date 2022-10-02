@@ -2,11 +2,7 @@
 
 return [
 
-    /*
-    |--------------------------------------------------------------------------
-    | Backpack\Base Language Lines - Arabic
-    |--------------------------------------------------------------------------
-    */
+
 
     'item'          => 'item',
     'category'      => 'category',
@@ -15,6 +11,9 @@ return [
     'supplier'      => 'supplier',
     'customer'      => 'customer',
     'user'          => 'user',
+    'auth'          => 'authntication',
+    'role'          => 'role',
+    'perm'          => 'permisson',
 
 
 

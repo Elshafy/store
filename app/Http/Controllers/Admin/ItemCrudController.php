@@ -31,7 +31,7 @@ class ItemCrudController extends CrudController
     {
         CRUD::setModel(\App\Models\Item::class);
         CRUD::setRoute(config('backpack.base.route_prefix') . '/item');
-        CRUD::setEntityNameStrings('item', 'items');
+        CRUD::setEntityNameStrings(trans('item.item'), trans('item.items'));
         Gate::authorize('editItem', Item::class);
     }
 
@@ -85,13 +85,24 @@ class ItemCrudController extends CrudController
         );
 
         CRUD::addColumn([
-            'label'   => 'active',
+            'label'   => trans('item.active'),
             'name'    => 'active',
             'type'    => 'boolean',
             'options' => [true => 'active', false => 'pendding'],
         ]);
-        CRUD::column('created_at');
-        CRUD::column('updated_at');
+        CRUD::addColumn(
+            [
+                'name' => 'created_at',
+                'label'        => trans('item.created')
+            ]
+        );
+        CRUD::addColumn(
+            [
+                'name' => 'updated_at',
+                'label'        => trans('item.updated')
+            ]
+        );
+
 
         /**
          * Columns can be defined using the fluent syntax or array syntax:
