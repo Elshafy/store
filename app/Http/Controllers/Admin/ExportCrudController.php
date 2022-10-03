@@ -34,6 +34,12 @@ class ExportCrudController extends CrudController
             $this->changeAmount($entry);
         });
     }
+    public function changeAmount($entry)
+    {
+        $item = Item::find($entry->item_id);
+        $item->amount =  $item->amount - $entry->amount;
+        $item->save();
+    }
 
 
     protected function setupListOperation()
@@ -51,6 +57,24 @@ class ExportCrudController extends CrudController
         CRUD::column('amount');
         CRUD::column('created_at');
         CRUD::column('updated_at');
+    }
+    public function store()
+    {
+
+
+        if (!$this->checkEnoughAmount(request()->input('item_id'), request()->input('amount'))) {
+            \Alert::add('warning', 'thers is no enought amount  ')->flash();
+
+            return back();
+        }
+        $response = $this->traitStore();
+        return $response;
+    }
+    public function checkEnoughAmount($id, $amount)
+    {
+        $item = Item::find($id);
+
+        return (($item->amount - $item->min) >= $amount);
     }
 
     protected function setupCreateOperation()
@@ -90,30 +114,5 @@ class ExportCrudController extends CrudController
     {
 
         $this->setupCreateOperation();
-    }
-    public function changeAmount($entry)
-    {
-        $item = Item::find($entry->item_id);
-        $item->amount =  $item->amount - $entry->amount;
-        $item->save();
-    }
-
-    public function checkEnoughAmount($id, $amount)
-    {
-        $item = Item::find($id);
-
-        return (($item->amount - $item->min) >= $amount);
-    }
-    public function store()
-    {
-
-
-        if (!$this->checkEnoughAmount(request()->input('item_id'), request()->input('amount'))) {
-            \Alert::add('warning', 'thers is no enought amount  ')->flash();
-
-            return back();
-        }
-        $response = $this->traitStore();
-        return $response;
     }
 }
