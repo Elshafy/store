@@ -4,7 +4,7 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Backpack\Base Language Lines - Arabic
+    | Backpack\Base Language Lines - engkish
     |--------------------------------------------------------------------------
     */
 
@@ -16,11 +16,14 @@ return [
     'price'     => 'en_Price',
     'active'    => 'en_active',
     'image'    => 'en_image',
-    'changeStateItem'    => 'changeStateItem',
+    'active' => 'active',
+    'inactive' => ' inactive ',
 
     'items'    => ' items',
     'item'    => ' item',
     'created'    => 'created',
     'updated'    => 'updated ',
+    'erorr' => '  some thing went wrong  '
+
 
 ];

@@ -24,6 +24,6 @@ class ItemPolicy
     }
     public function activeItem(User $user)
     {
-        return backpack_user()->can('changeState');
+        return backpack_user()->can('changeStateItem');
     }
 }

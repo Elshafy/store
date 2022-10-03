@@ -61,10 +61,10 @@ class DatabaseSeeder extends Seeder
             'guard_name'    => 'web',
         ]);
         $changePer = Permission::create([
-            'name'     => 'changeState',
+            'name'     => 'changeStateItem',
             'guard_name'    => 'web',
         ]);
-        $adminRole->givePermissionTo('changeState');
+        $adminRole->givePermissionTo('changeStateItem');
         $adminRole->givePermissionTo('edit-item');
         $admin->assignRole('admin');
         $category = Category::factory(2)->create();

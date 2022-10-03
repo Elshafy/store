@@ -6,6 +6,7 @@ use App\Http\Requests\ItemRequest;
 use App\Models\Item;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
+use Backpack\PermissionManager\app\Models\Role;
 use Illuminate\Support\Facades\Gate;
 
 
@@ -23,6 +24,9 @@ class ItemCrudController extends CrudController
         CRUD::setModel(\App\Models\Item::class);
         CRUD::setRoute(config('backpack.base.route_prefix') . '/item');
         CRUD::setEntityNameStrings(trans('item.item'), trans('item.items'));
+        if (!backpack_user()->hasAnyRole(Role::all())) {
+            $this->crud->denyAccess(['list']);
+        }
         if (!backpack_user()->can('edit-item')) {
             $this->crud->denyAccess(['update', 'create', 'delete']);
         }
@@ -31,11 +35,10 @@ class ItemCrudController extends CrudController
 
     protected function setupListOperation()
     {
-        if (backpack_user()->can('changeState')) {
+        if (backpack_user()->can('changeStateItem')) {
             $this->crud->addButtonFromView('line', 'changeStateItem',  'changeStateItem', 'beginning');
         }
-        if (backpack_user()->can('edit-item')) {
-        }
+
         CRUD::addColumn(
             [
                 'name' => 'name',
@@ -114,7 +117,6 @@ class ItemCrudController extends CrudController
     protected function setupCreateOperation()
     {
         CRUD::setValidation(ItemRequest::class);
-        $this->crud->removeColumn('image');
         CRUD::addField(
             [
                 'name' => 'category_id',

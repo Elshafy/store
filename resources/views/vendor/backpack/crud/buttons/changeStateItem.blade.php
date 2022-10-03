@@ -1,8 +1,16 @@
 <a href="javascript:void(0)" onclick="change(this)"
     data-route="{{ url($crud->route . '/' . $entry->getKey() . '/changeState') }}"
-    class="btn btn-sm btn-link text-capitalize" data-button-type="change">
+    class="btn btn-sm btn-link text-capitalize" data-button-type="change"
+    data-mes-success='@if ($entry->active) {{ trans('item.inactive') }} @else {{ trans('item.active') }} @endif'
+    data-mes-error="{{ trans('item.error') }}">
     <i class="la la-question"></i>
-    {{ trans('item.changeStateItem') }}
+    @if ($entry->active)
+        {{ trans('item.inactive') }}
+    @else
+        {{ trans('item.active') }}
+    @endif
+
+
 </a>
 
 
@@ -16,6 +24,9 @@
             // e.preventDefault();
             var button = $(button);
             var route = button.attr('data-route');
+            var mes = button.attr('data-mes-success');
+            var error = button.attr('data-mes-error');
+
 
             $.ajax({
                 url: route,
@@ -24,7 +35,7 @@
                     // Show an alert with the result
                     // console.log(result, route);
                     new Noty({
-                        text: "Some Tx had been imported",
+                        text: 'تمت عملية' + mes,
                         type: "success"
                     }).show();
 
@@ -36,7 +47,7 @@
                 error: function(result) {
                     // Show an alert with the result
                     new Noty({
-                        text: "The new entry could not be created. Please try again.",
+                        text: error,
                         type: "warning"
                     }).show();
                 }

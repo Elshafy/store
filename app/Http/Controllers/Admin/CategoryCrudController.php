@@ -7,11 +7,7 @@ use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
 use Illuminate\Validation\Rule;
 
-/**
- * Class CategoryCrudController
- * @package App\Http\Controllers\Admin
- * @property-read \Backpack\CRUD\app\Library\CrudPanel\CrudPanel $crud
- */
+
 class CategoryCrudController extends CrudController
 {
     use \Backpack\CRUD\app\Http\Controllers\Operations\ListOperation;
@@ -20,75 +16,40 @@ class CategoryCrudController extends CrudController
     use \Backpack\CRUD\app\Http\Controllers\Operations\DeleteOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\ShowOperation;
 
-    /**
-     * Configure the CrudPanel object. Apply settings to all operations.
-     *
-     * @return void
-     */
+
     public function setup()
     {
         CRUD::setModel(\App\Models\Category::class);
         CRUD::setRoute(config('backpack.base.route_prefix') . '/category');
-        CRUD::setEntityNameStrings('category', 'categories');
+        CRUD::setEntityNameStrings(trans('category.category'), trans('category.categories'));
     }
 
-    /**
-     * Define what happens when the List operation is loaded.
-     *
-     * @see  https://backpackforlaravel.com/docs/crud-operation-list-entries
-     * @return void
-     */
+
     protected function setupListOperation()
     {
-        CRUD::column('name');
-        CRUD::column('code');
-        CRUD::column('created_at');
-        CRUD::column('updated_at');
+        CRUD::addColumn(['name' => 'code', 'label' => trans('category.code')]);
+        CRUD::addColumn(['name' => 'name', 'label' => trans('category.name')]);
+        CRUD::addColumn(['name' => 'created_at', 'label' => trans('category.created')]);
+        CRUD::addColumn(['name' => 'updated_at', 'label' => trans('category.updated')]);
+    }
+    protected function setupShowOperation()
+    {
 
-        /**
-         * Columns can be defined using the fluent syntax or array syntax:
-         * - CRUD::column('price')->type('number');
-         * - CRUD::addColumn(['name' => 'price', 'type' => 'number']);
-         */
+        $this->setupListOperation();
     }
 
-    /**
-     * Define what happens when the Create operation is loaded.
-     *
-     * @see https://backpackforlaravel.com/docs/crud-operation-create
-     * @return void
-     */
     protected function setupCreateOperation()
     {
         CRUD::setValidation(CategoryRequest::class);
 
-        CRUD::field('name');
-        CRUD::field('code');
-
-        /**
-         * Fields can be defined using the fluent syntax or array syntax:
-         * - CRUD::field('price')->type('number');
-         * - CRUD::addField(['name' => 'price', 'type' => 'number']));
-         */
+        CRUD::addField(['name' => 'name', 'label' => trans('category.name')]);
+        CRUD::addField(['name' => 'code', 'label' => trans('category.code')]);
     }
 
-    /**
-     * Define what happens when the Update operation is loaded.
-     *
-     * @see https://backpackforlaravel.com/docs/crud-operation-update
-     * @return void
-     */
+
     protected function setupUpdateOperation()
     {
-        // dd($this->crud->entry);
-        $entry = $this->crud->getCurrentEntry();
 
-        CRUD::setValidation([
-
-            'name' => ['required', Rule::unique('categories', 'name')->ignore($entry)],
-            'code' => 'required|min:5|max:255'
-
-        ]);
         $this->setupCreateOperation();
     }
 }
