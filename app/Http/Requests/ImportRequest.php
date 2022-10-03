@@ -25,7 +25,7 @@ class ImportRequest extends FormRequest
     public function rules()
     {
         return [
-            'amount' => 'required|integer',
+            'amount' => 'required|integer|min:0',
             'item_id' => 'required|integer',
             'supplier_id' => 'required|integer',
 

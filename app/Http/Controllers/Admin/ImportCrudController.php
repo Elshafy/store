@@ -8,11 +8,7 @@ use App\Models\Item;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
 
-/**
- * Class ImportCrudController
- * @package App\Http\Controllers\Admin
- * @property-read \Backpack\CRUD\app\Library\CrudPanel\CrudPanel $crud
- */
+
 class ImportCrudController extends CrudController
 {
     use \Backpack\CRUD\app\Http\Controllers\Operations\ListOperation;
@@ -21,11 +17,7 @@ class ImportCrudController extends CrudController
     use \Backpack\CRUD\app\Http\Controllers\Operations\DeleteOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\ShowOperation;
 
-    /**
-     * Configure the CrudPanel object. Apply settings to all operations.
-     *
-     * @return void
-     */
+
     public function setup()
     {
         CRUD::setModel(\App\Models\Import::class);
@@ -39,15 +31,9 @@ class ImportCrudController extends CrudController
         });
     }
 
-    /**
-     * Define what happens when the List operation is loaded.
-     *
-     * @see  https://backpackforlaravel.com/docs/crud-operation-list-entries
-     * @return void
-     */
+
     protected function setupListOperation()
     {
-        // CRUD::column('item_id');
         CRUD::column('supplier_id');
         CRUD::addColumn([
 
@@ -61,28 +47,18 @@ class ImportCrudController extends CrudController
         CRUD::column('amount');
         CRUD::column('created_at');
         CRUD::column('updated_at');
-
-        /**
-         * Columns can be defined using the fluent syntax or array syntax:
-         * - CRUD::column('price')->type('number');
-         * - CRUD::addColumn(['name' => 'price', 'type' => 'number']);
-         */
     }
 
-    /**
-     * Define what happens when the Create operation is loaded.
-     *
-     * @see https://backpackforlaravel.com/docs/crud-operation-create
-     * @return void
-     */
+
     protected function setupCreateOperation()
     {
         CRUD::setValidation(ImportRequest::class);
 
-        // CRUD::field('item_id');
-        // CRUD::field('supplier_id');
-        CRUD::field('amount');
-        CRUD::addField([  // Select
+
+        CRUD::addField([
+            'name' => 'amount', 'label' => 'amount', 'attributes' => ['min' => 0,]
+        ]);
+        CRUD::addField([
             'label'     => "item",
             'type'      => 'select',
             'name'      => 'item_id',
@@ -93,7 +69,7 @@ class ImportCrudController extends CrudController
                 return $query->where('active', true)->get();
             })
         ],);
-        CRUD::addField([  // Select
+        CRUD::addField([
             'label'     => "supplier",
             'type'      => 'select',
             'name'      => 'supplier_id',
@@ -104,20 +80,9 @@ class ImportCrudController extends CrudController
                 return $query->where('active', true)->get();
             }),
         ],);
-
-        /**
-         * Fields can be defined using the fluent syntax or array syntax:
-         * - CRUD::field('price')->type('number');
-         * - CRUD::addField(['name' => 'price', 'type' => 'number']));
-         */
     }
 
-    /**
-     * Define what happens when the Update operation is loaded.
-     *
-     * @see https://backpackforlaravel.com/docs/crud-operation-update
-     * @return void
-     */
+
     protected function setupUpdateOperation()
     {
         $this->setupCreateOperation();

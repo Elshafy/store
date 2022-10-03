@@ -25,7 +25,7 @@ class ExportRequest extends FormRequest
     public function rules()
     {
         return [
-            'amount' => 'required|integer',
+            'amount' => 'required|integer|min:0',
             'item_id' => 'required|integer',
             'customer_id' => 'required|integer',
 

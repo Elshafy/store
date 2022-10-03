@@ -12,7 +12,9 @@ use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
 class ExportCrudController extends CrudController
 {
     use \Backpack\CRUD\app\Http\Controllers\Operations\ListOperation;
-    use \Backpack\CRUD\app\Http\Controllers\Operations\CreateOperation;
+    use \Backpack\CRUD\app\Http\Controllers\Operations\CreateOperation {
+        store as traitStore;
+    }
     use \Backpack\CRUD\app\Http\Controllers\Operations\UpdateOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\DeleteOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\ShowOperation;
@@ -24,18 +26,18 @@ class ExportCrudController extends CrudController
         CRUD::setRoute(config('backpack.base.route_prefix') . '/export');
         CRUD::setEntityNameStrings('export', 'exports');
 
-        //! adjest amount in the table items  after creat and update an import record
+        // //! adjest amount in the table items  after creat and update an import record
+
         Export::created(function ($entry) {
-            $item = Item::find($entry->item_id);
-            $item->amount =  $item->amount - $entry->amount;
-            $item->save();
+
+
+            $this->changeAmount($entry);
         });
     }
 
 
     protected function setupListOperation()
     {
-        // CRUD::column('item_id');
         CRUD::column('customer_id');
         CRUD::addColumn([
 
@@ -56,8 +58,10 @@ class ExportCrudController extends CrudController
         CRUD::setValidation(ExportRequest::class);
 
 
-        CRUD::field('amount');
-        CRUD::addField([  // Select
+        CRUD::addField([
+            'name' => 'amount', 'label' => 'amount', 'attributes' => ['min' => 0,]
+        ]);
+        CRUD::addField([
             'label'     => "item",
             'type'      => 'select',
             'name'      => 'item_id',
@@ -68,7 +72,7 @@ class ExportCrudController extends CrudController
                 return $query->where('active', true)->get();
             })
         ],);
-        CRUD::addField([  // Select
+        CRUD::addField([
             'label'     => "customer",
             'type'      => 'select',
             'name'      => 'customer_id',
@@ -86,5 +90,30 @@ class ExportCrudController extends CrudController
     {
 
         $this->setupCreateOperation();
+    }
+    public function changeAmount($entry)
+    {
+        $item = Item::find($entry->item_id);
+        $item->amount =  $item->amount - $entry->amount;
+        $item->save();
+    }
+
+    public function checkEnoughAmount($id, $amount)
+    {
+        $item = Item::find($id);
+
+        return (($item->amount - $item->min) >= $amount);
+    }
+    public function store()
+    {
+
+
+        if (!$this->checkEnoughAmount(request()->input('item_id'), request()->input('amount'))) {
+            \Alert::add('warning', 'thers is no enought amount  ')->flash();
+
+            return back();
+        }
+        $response = $this->traitStore();
+        return $response;
     }
 }
