@@ -21,14 +21,18 @@
 <li class="nav-item"><a class="nav-link" href="{{ backpack_url('customer') }}">
         <i class="nav-icon la la-level-up"></i>
         {{ trans('side.customer') }}</a></li>
+
 <li class="nav-item"><a class="nav-link" href="{{ backpack_url('export') }}"><i class="nav-icon la la-question"></i>
-        {{ trans('side.export') }}</a></li>
+        {{ trans('side.export') }}</a>
+</li>
+
 <li class="nav-item"><a class="nav-link" href="{{ backpack_url('import') }}"><i class="nav-icon la la-question"></i>
         {{ trans('side.import') }}</a></li>
-@hasanyrole(Backpack\PermissionManager\app\Models\Role::all())
+
+@canany(['changeStateItem', 'edit-item'])
     <li class="nav-item"><a class="nav-link" href="{{ backpack_url('item') }}"><i class="nav-icon la la-leaf"></i>
             {{ trans('side.item') }}</a></li>
-@endhasanyrole
+@endcanany
 <li class="nav-item"><a class="nav-link" href="{{ backpack_url('supplier') }}"><i class="nav-icon la la-question"></i>
         {{ trans('side.supplier') }}</a></li>
 <li class="nav-item"><a class="nav-link" href="{{ backpack_url('user') }}"><i
