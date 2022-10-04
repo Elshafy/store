@@ -34,7 +34,7 @@ class ExportCrudController extends CrudController
         //     $this->changeAmount(request()->input('item_id'), request()->input('amount')));
         // });
         if (!backpack_user()->can('edit-export')) {
-            $this->crud->denyAccess(['update', 'create', 'delete']);
+            $this->crud->denyAccess(['update', 'create', 'delete', 'list']);
         }
     }
 

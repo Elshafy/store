@@ -64,6 +64,22 @@ class DatabaseSeeder extends Seeder
             'name'     => 'changeStateItem',
             'guard_name'    => 'web',
         ]);
+        $changePer = Permission::create([
+            'name'     => 'edit-import',
+            'guard_name'    => 'web',
+        ]);
+        $changePer = Permission::create([
+            'name'     => 'edit-export',
+            'guard_name'    => 'web',
+        ]);
+        $changePer = Permission::create([
+            'name'     => 'edit-customer',
+            'guard_name'    => 'web',
+        ]);
+        $changePer = Permission::create([
+            'name'     => 'edit-supplier',
+            'guard_name'    => 'web',
+        ]);
         $adminRole->givePermissionTo('changeStateItem');
         $adminRole->givePermissionTo('edit-item');
         $admin->assignRole('admin');

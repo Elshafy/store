@@ -26,13 +26,9 @@ class ImportCrudController extends CrudController
         CRUD::setRoute(config('backpack.base.route_prefix') . '/import');
         CRUD::setEntityNameStrings('import', 'imports');
         //! adjest amount in the table items  after creat and update an import record
-        // Import::created(function ($entry) {
-        //     $item = Item::find($entry->item_id);
-        //     $item->amount =  $item->amount + $entry->amount;
-        //     $item->save();
-        // });
+
         if (!backpack_user()->can('edit-import')) {
-            $this->crud->denyAccess(['update', 'create', 'delete']);
+            $this->crud->denyAccess(['update', 'create', 'delete', 'list']);
         }
     }
 
