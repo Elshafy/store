@@ -7,12 +7,14 @@ use App\Models\Import;
 use App\Models\Item;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
-
+use Illuminate\Support\Facades\DB;
 
 class ImportCrudController extends CrudController
 {
     use \Backpack\CRUD\app\Http\Controllers\Operations\ListOperation;
-    use \Backpack\CRUD\app\Http\Controllers\Operations\CreateOperation;
+    use \Backpack\CRUD\app\Http\Controllers\Operations\CreateOperation {
+        store as traitStore;
+    }
     use \Backpack\CRUD\app\Http\Controllers\Operations\UpdateOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\DeleteOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\ShowOperation;
@@ -24,11 +26,10 @@ class ImportCrudController extends CrudController
         CRUD::setRoute(config('backpack.base.route_prefix') . '/import');
         CRUD::setEntityNameStrings('import', 'imports');
         //! adjest amount in the table items  after creat and update an import record
-        Import::created(function ($entry) {
-            $item = Item::find($entry->item_id);
-            $item->amount =  $item->amount + $entry->amount;
-            $item->save();
-        });
+
+        if (!backpack_user()->can('edit-import')) {
+            $this->crud->denyAccess(['update', 'create', 'delete', 'list']);
+        }
     }
 
 
@@ -47,6 +48,26 @@ class ImportCrudController extends CrudController
         CRUD::column('amount');
         CRUD::column('created_at');
         CRUD::column('updated_at');
+    }
+    public function store()
+    {
+        $response = null;
+
+
+        DB::transaction(function () use (&$response) {
+            $response = $this->traitStore();
+            $this->changeAmount(request()->input('item_id'), request()->input('amount'));
+        });
+
+
+
+        return $response;
+    }
+    public function changeAmount($id, $amount)
+    {
+        $item = Item::find($id);
+        $item->amount =  $item->amount + $amount;
+        $item->save();
     }
 
 

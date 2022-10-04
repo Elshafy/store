@@ -7,7 +7,7 @@ use App\Models\Export;
 use App\Models\Item;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
-
+use Illuminate\Support\Facades\DB;
 
 class ExportCrudController extends CrudController
 {
@@ -28,18 +28,16 @@ class ExportCrudController extends CrudController
 
         // //! adjest amount in the table items  after creat and update an import record
 
-        Export::created(function ($entry) {
+        // Export::created(function ($entry) {
 
 
-            $this->changeAmount($entry);
-        });
+        //     $this->changeAmount(request()->input('item_id'), request()->input('amount')));
+        // });
+        if (!backpack_user()->can('edit-export')) {
+            $this->crud->denyAccess(['update', 'create', 'delete', 'list']);
+        }
     }
-    public function changeAmount($entry)
-    {
-        $item = Item::find($entry->item_id);
-        $item->amount =  $item->amount - $entry->amount;
-        $item->save();
-    }
+
 
 
     protected function setupListOperation()
@@ -60,21 +58,34 @@ class ExportCrudController extends CrudController
     }
     public function store()
     {
-
+        $response = null;
 
         if (!$this->checkEnoughAmount(request()->input('item_id'), request()->input('amount'))) {
             \Alert::add('warning', 'thers is no enought amount  ')->flash();
 
             return back();
         }
-        $response = $this->traitStore();
+        DB::transaction(function () use (&$response) {
+            $response = $this->traitStore();
+            $this->changeAmount(request()->input('item_id'), request()->input('amount'));
+        });
+
+
+
         return $response;
     }
     public function checkEnoughAmount($id, $amount)
     {
         $item = Item::find($id);
 
-        return (($item->amount - $item->min) >= $amount);
+        return ($item->amount >= $amount);
+    }
+
+    public function changeAmount($id, $amount)
+    {
+        $item = Item::find($id);
+        $item->amount =  $item->amount - $amount;
+        $item->save();
     }
 
     protected function setupCreateOperation()

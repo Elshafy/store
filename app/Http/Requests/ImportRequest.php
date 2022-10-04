@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class ImportRequest extends FormRequest
 {
@@ -25,9 +26,21 @@ class ImportRequest extends FormRequest
     public function rules()
     {
         return [
-            'amount' => 'required|integer|min:0',
-            'item_id' => 'required|integer',
-            'supplier_id' => 'required|integer',
+            'amount' => 'required|integer|min:1',
+            'item_id' => [
+                'required',
+                'integer',
+                Rule::exists('items', 'id')->where(function ($query) {
+                    return $query->where('active', 1);
+                })
+            ],
+            'supplier_id' => [
+                'required',
+                'integer',
+                Rule::exists('suppliers', 'id')->where(function ($query) {
+                    return $query->where('active', 1);
+                })
+            ],
 
 
         ];
@@ -36,6 +49,12 @@ class ImportRequest extends FormRequest
     /**
      * Get the validation attributes that apply to the request.
      *
+     *     'email' => [
+        'required',
+        Rule::exists('staff')->where(function ($query) {
+            return $query->where('account_id', 1);
+        }),
+    ],
      * @return array
      */
     public function attributes()

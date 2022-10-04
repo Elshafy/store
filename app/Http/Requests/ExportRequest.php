@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class ExportRequest extends FormRequest
 {
@@ -25,9 +26,21 @@ class ExportRequest extends FormRequest
     public function rules()
     {
         return [
-            'amount' => 'required|integer|min:0',
-            'item_id' => 'required|integer',
-            'customer_id' => 'required|integer',
+            'amount' => 'required|integer|min:1',
+            'item_id' => [
+                'required',
+                'integer',
+                Rule::exists('items', 'id')->where(function ($query) {
+                    return $query->where('active', 1);
+                })
+            ],
+            'customer_id' => [
+                'required',
+                'integer',
+                Rule::exists('customers', 'id')->where(function ($query) {
+                    return $query->where('active', 1);
+                })
+            ],
 
 
         ];

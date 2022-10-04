@@ -18,19 +18,34 @@
 <li class="nav-item"><a class="nav-link" href="{{ backpack_url('category') }}">
         <i class="nav-icon la la-folder"></i>
         {{ trans('side.category') }}</a></li>
-<li class="nav-item"><a class="nav-link" href="{{ backpack_url('customer') }}">
-        <i class="nav-icon la la-level-up"></i>
-        {{ trans('side.customer') }}</a></li>
-<li class="nav-item"><a class="nav-link" href="{{ backpack_url('export') }}"><i class="nav-icon la la-question"></i>
-        {{ trans('side.export') }}</a></li>
-<li class="nav-item"><a class="nav-link" href="{{ backpack_url('import') }}"><i class="nav-icon la la-question"></i>
-        {{ trans('side.import') }}</a></li>
-@hasanyrole(Backpack\PermissionManager\app\Models\Role::all())
+@can('edit-customer')
+    <li class="nav-item"><a class="nav-link" href="{{ backpack_url('customer') }}">
+            <i class="nav-icon la la-level-up"></i>
+            {{ trans('side.customer') }}</a>
+    </li>
+@endcan
+@can('edit-export')
+    <li class="nav-item"><a class="nav-link" href="{{ backpack_url('export') }}"><i class="nav-icon la la-question"></i>
+            {{ trans('side.export') }}</a>
+    </li>
+@endcan
+@can('edit-import')
+    <li class="nav-item"><a class="nav-link" href="{{ backpack_url('import') }}"><i class="nav-icon la la-question"></i>
+            {{ trans('side.import') }}</a></li>
+@endcan
+
+
+
+@canany(['changeStateItem', 'edit-item'])
     <li class="nav-item"><a class="nav-link" href="{{ backpack_url('item') }}"><i class="nav-icon la la-leaf"></i>
             {{ trans('side.item') }}</a></li>
-@endhasanyrole
-<li class="nav-item"><a class="nav-link" href="{{ backpack_url('supplier') }}"><i class="nav-icon la la-question"></i>
-        {{ trans('side.supplier') }}</a></li>
+@endcanany
+@can('edit-supplier')
+    <li class="nav-item"><a class="nav-link" href="{{ backpack_url('supplier') }}">
+            <i class="nav-icon la la-question"></i>
+            {{ trans('side.supplier') }}</a>
+    </li>
+@endcan
 <li class="nav-item"><a class="nav-link" href="{{ backpack_url('user') }}"><i
             class="nav-icon la la-cart-arrow-down"></i>
         {{ trans('side.user') }}</a></li>
