@@ -22,8 +22,8 @@ class DatabaseSeeder extends Seeder
     {
         $admin = User::create([
             'name'     => 'Demo Admin',
-            'email'    => 'admin@gmail.com',
-            'password' => bcrypt('admin'),
+            'email'    => 'admin@rikaz.com',
+            'password' => bcrypt('12345678'),
         ]);
         User::factory(10)->create();
         $supplier = Supplier::create([
@@ -82,6 +82,11 @@ class DatabaseSeeder extends Seeder
         ]);
         $adminRole->givePermissionTo('changeStateItem');
         $adminRole->givePermissionTo('edit-item');
+        $adminRole->givePermissionTo('edit-import');
+        $adminRole->givePermissionTo('edit-export');
+        $adminRole->givePermissionTo('edit-customer');
+        $adminRole->givePermissionTo('edit-supplier');
+
         $admin->assignRole('admin');
         $category = Category::factory(2)->create();
         $items = Item::factory(5)->create(['category_id' => $category[0]]);
