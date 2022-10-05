@@ -2,6 +2,10 @@
 
 namespace Tests\Feature;
 
+use App\Models\Customer;
+use App\Models\Export;
+use App\Models\Import;
+use App\Models\Supplier;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
@@ -23,10 +27,22 @@ class ApiTest extends TestCase
     }
     public function test_api_customer()
     {
-        $user = User::first();
-        Sanctum::actingAs($user, ['*']);
+        $user = User::factory()->create();
 
-        $response = $this->get('api/customer/1');
+
+        $customer = Customer::create(
+            ['user_id' => $user->id]
+        );
+
+        $cusUser = $customer->user;
+        Export::factory(20)->create([
+            'item_id' => 1,
+            'customer_id' => $customer->id
+        ]);
+
+        Sanctum::actingAs($cusUser, ['*']);
+
+        $response = $this->get('api/customer');
         $response->assertStatus(200)
             ->assertJson([
                 'success' => true,
@@ -34,10 +50,24 @@ class ApiTest extends TestCase
     }
     public function test_api_supplier()
     {
-        $user = User::first();
-        Sanctum::actingAs($user, ['*']);
+        $user = User::factory()->create();
 
-        $response = $this->get('api/supplier/1');
+
+        $supplier = Supplier::create(
+            ['user_id' => $user->id]
+        );
+        $supUser = $supplier->user;
+
+        $imports = Import::factory(20)->create([
+            'item_id' => 1,
+            'supplier_id' => $supplier->id
+        ]);
+
+        // dd($imports);
+
+        Sanctum::actingAs($supUser, ['*']);
+
+        $response = $this->get('api/supplier');
         $response->assertStatus(200)
             ->assertJson([
                 'success' => true,

@@ -23,8 +23,8 @@ Route::post('/login', [AuthController::class, 'login']);
 
 
 Route::group(['middleware' => ['auth:sanctum']], function () {
-    Route::get('customer/{id}', [ReportController::class, 'customerRecord'])->whereNumber('id');
-    Route::get('supplier/{id}', [ReportController::class, 'supplierRecord'])->whereNumber('id');
+    Route::get('customer', [ReportController::class, 'customerRecord'])->whereNumber('id');
+    Route::get('supplier', [ReportController::class, 'supplierRecord'])->whereNumber('id');
     Route::post('/logout', [AuthController::class, 'logout']);
 });
 
