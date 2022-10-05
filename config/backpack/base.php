@@ -261,6 +261,8 @@ return [
     // Can be a single class or an array of classes
     'middleware_class' => [
         App\Http\Middleware\CheckIfAdmin::class,
+        App\Http\Middleware\Setlocal::class,
+
         \Illuminate\Foundation\Http\Middleware\ConvertEmptyStringsToNull::class,
         // Backpack\Base\app\Http\Middleware\UseBackpackAuthGuardInsteadOfDefaultAuthGuard::class,
         // \Backpack\CRUD\app\Http\Middleware\UseBackpackAuthGuardInsteadOfDefaultAuthGuard::class,
