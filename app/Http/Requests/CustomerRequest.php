@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Models\Customer;
 use App\Models\User;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
@@ -26,13 +27,13 @@ class CustomerRequest extends FormRequest
      */
     public function rules()
     {
-        // dd($this);
+        $custmer = Customer::find(request('id'));
+        $custmer ??= new Customer();
 
-        // (int)  $user = User::find(request('id'))->id;
         return [
             'name' => 'required|min:3|max:255',
             'phone' => 'min:9|max:255',
-            'email' => ['required', Rule::unique('users', 'email')],
+            'email' => ['required', Rule::unique('users', 'email')->ignore($custmer->user_id)],
             'active' => 'required|boolean'
         ];
     }
