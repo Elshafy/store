@@ -45,7 +45,7 @@ class ReportController extends Controller
     {
         $supplier = request()->user()->supplier;
         if (!$supplier) {
-            return $this->sendError('you dont have a supplier$supplier or data');
+            return $this->sendError('you dont have a supplier or data');
         }
         $id = $supplier->id;
 

@@ -19,12 +19,7 @@ class ApiTest extends TestCase
      *
      * @return void
      */
-    public function test_example()
-    {
-        $response = $this->get('/');
 
-        $response->assertStatus(200);
-    }
     public function test_api_customer()
     {
         $user = User::factory()->create();
@@ -46,6 +41,7 @@ class ApiTest extends TestCase
         $response->assertStatus(200)
             ->assertJson([
                 'success' => true,
+                'data' => ['number' => 20]
             ]);
     }
     public function test_api_supplier()
@@ -71,6 +67,33 @@ class ApiTest extends TestCase
         $response->assertStatus(200)
             ->assertJson([
                 'success' => true,
+                'data' => ['number' => 20]
+
+            ]);
+    }
+
+    public function test_error_when_user_have_no_customer()
+    {
+        $user = User::factory()->create();
+        Sanctum::actingAs($user, ['*']);
+
+        $response = $this->get('api/customer');
+        $response->assertStatus(404)
+            ->assertJson([
+                'success' => false,
+                'message' => 'you dont have a customer or data'
+            ]);
+    }
+    public function test_error_when_user_have_no_supplier()
+    {
+        $user = User::factory()->create();
+        Sanctum::actingAs($user, ['*']);
+
+        $response = $this->get('api/supplier');
+        $response->assertStatus(404)
+            ->assertJson([
+                'success' => false,
+                'message' => 'you dont have a supplier or data'
             ]);
     }
 }
