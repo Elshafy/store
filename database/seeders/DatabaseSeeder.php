@@ -25,26 +25,19 @@ class DatabaseSeeder extends Seeder
             'email'    => 'admin@rikaz.com',
             'password' => bcrypt('12345678'),
         ]);
-        User::factory(10)->create();
+        $users = User::factory(10)->create();
         $supplier = Supplier::create([
-            'name' => Str::random(10),
-            'email' => Str::random(10) . '@gmail.com',
-            'phone' => Str::random(10),
+            'user_id' => $users[0]->id
+
         ]);
         $supplier1 = Supplier::create([
-            'name' => Str::random(10),
-            'email' => Str::random(10) . '@gmail.com',
-            'phone' => Str::random(10),
+            'user_id' => $users[1]->id,
         ]);
         $customer = Customer::create([
-            'name' => Str::random(10),
-            'email' => Str::random(10) . '@gmail.com',
-            'phone' => Str::random(10),
+            'user_id' => $users[0]->id
         ]);
         $customer1 = Customer::create([
-            'name' => Str::random(10),
-            'email' => Str::random(10) . '@gmail.com',
-            'phone' => Str::random(10),
+            'user_id' => $users[1]->id
         ]);
         $adminRole = Role::create([
             'name'     => 'admin',

@@ -27,8 +27,8 @@ class SupplierRequest extends FormRequest
     {
         return [
             'name' => 'required|min:3|max:255',
-            'phone' => 'required|min:9|max:255',
-            'email' => ['required', Rule::unique('suppliers', 'email')->ignore($this->id)],
+            'phone' => 'min:9|max:255',
+            'email' => ['required', Rule::unique('users', 'email')->ignore($this->id)],
             'active' => 'required|boolean'
         ];
     }
