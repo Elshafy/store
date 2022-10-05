@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Requests\CustomerRequest;
+use App\Models\Customer;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
 use Illuminate\Validation\Rule;
@@ -22,7 +23,7 @@ class CustomerCrudController extends CrudController
         CRUD::setModel(\App\Models\Customer::class);
         CRUD::setRoute(config('backpack.base.route_prefix') . '/customer');
         CRUD::setEntityNameStrings('customer', 'customers');
-        if (!backpack_user()->can('edit-customer')) {
+        if (!backpack_user()->can('editCustomer', Customer::class)) {
             $this->crud->denyAccess(['update', 'create', 'delete', 'list']);
         }
     }

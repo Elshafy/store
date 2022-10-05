@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Requests\SupplierRequest;
+use App\Models\Supplier;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
 use Illuminate\Validation\Rule;
@@ -22,7 +23,7 @@ class SupplierCrudController extends CrudController
         CRUD::setModel(\App\Models\Supplier::class);
         CRUD::setRoute(config('backpack.base.route_prefix') . '/supplier');
         CRUD::setEntityNameStrings('supplier', 'suppliers');
-        if (!backpack_user()->can('edit-supplier')) {
+        if (!backpack_user()->can('editSupplier', Supplier::class)) {
             $this->crud->denyAccess(['update', 'create', 'delete', 'list']);
         }
     }
