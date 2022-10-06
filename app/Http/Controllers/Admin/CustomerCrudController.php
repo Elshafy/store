@@ -51,6 +51,8 @@ class CustomerCrudController extends CrudController
             'label' => 'email',
             'type'  => 'text'
         ],);
+        CRUD::column('phone');
+
 
         CRUD::column('created_at');
         CRUD::column('updated_at');
@@ -66,11 +68,17 @@ class CustomerCrudController extends CrudController
             $user = User::create([
                 'name'     => request()->input('name'),
                 'email'    => request()->input('email'),
-                'password' => bcrypt(request()->input('phone'))
+                'password' => bcrypt('12345')
             ]);
 
 
-            $item = $this->crud->create(['user_id' => $user->id, 'active' => request('active')]);
+            $item = $this->crud->create(
+                [
+                    'user_id' => $user->id,
+                    'active' => request('active'),
+                    'phone' => request()->input('phone')
+                ]
+            );
         });
 
 
@@ -117,7 +125,7 @@ class CustomerCrudController extends CrudController
             // update the row in the db
             $item = $this->crud->update(
                 $request->get($this->crud->model->getKeyName()),
-                ['active' => request('active')]
+                ['active' => request('active'), 'phone' => request()->input('phone')]
             );
         });
 
@@ -138,6 +146,7 @@ class CustomerCrudController extends CrudController
         $user = $this->crud->getCurrentEntry()->user;
 
         CRUD::field('active');
+        CRUD::field('phone');
         $this->crud->addField([
             'name' => 'email',
             'type' => 'email',
