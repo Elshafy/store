@@ -16,41 +16,35 @@ class WidgetController extends Controller
     }
     public function itemWithExportMport()
     {
-
-        return Item::with(['imports', 'exports'])->get();
+        return   Item::withSum('imports', 'amount',)
+            ->withSum('exports', 'amount')
+            ->get();
     }
     public function LastMonth()
     {
 
-        return Item::with(
+
+        return   Item::withSum(
             [
-                'imports' => function ($q) {
-                    $q->whereBetween(
-                        'created_at',
+                'imports' =>
+                function ($q) {
+                    $q->whereBetween('created_at', [Carbon::now()->subMonth(), Carbon::now()]);
+                }
+            ],
+            'amount'
+        )->withSum(
+            ['exports' => function ($q) {
+                $q->whereBetween(
+                    'created_at',
 
-                        [Carbon::now()->subMonth(), Carbon::now()]
+                    [Carbon::now()->subMonth(), Carbon::now()]
 
-                    );
-                },
-                'exports' => function ($q) {
-                    $q->whereBetween(
-                        'created_at',
-
-                        [Carbon::now()->subMonth(), Carbon::now()]
-
-                    );
-                },
-            ]
+                );
+            }],
+            'amount'
         )->get();
     }
-    /**
-     * SELECT * , SUM(amount)AS total FROM `imports` GROUP BY item_id
-     ORDER BY `total`  DESC LIMIT 5
-     * DB::table('imports')
-     * $data = DB::table('imports')
-            ->select('*', DB::raw(' SUM(`amount`) AS `total` '))
-            ->groupBy('item_id')->orderByDesc('total')->limit(5)->get();
-     */
+
     public function TopImports()
     {
 

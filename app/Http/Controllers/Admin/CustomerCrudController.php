@@ -61,16 +61,20 @@ class CustomerCrudController extends CrudController
 
         $request = $this->crud->validateRequest();
         $this->crud->registerFieldEvents();
+        $item = null;
+        DB::transaction(function () use (&$item) {
+            $user = User::create([
+                'name'     => request()->input('name'),
+                'email'    => request()->input('email'),
+                'password' => bcrypt(request()->input('phone'))
+            ]);
 
 
-        $user = User::create([
-            'name'     => request()->input('name'),
-            'email'    => request()->input('email'),
-            'password' => bcrypt(request()->input('phone'))
-        ]);
+            $item = $this->crud->create(['user_id' => $user->id, 'active' => request('active')]);
+        });
 
 
-        $item = $this->crud->create(['user_id' => $user->id]);
+
         $this->data['entry'] = $this->crud->entry = $item;
 
         // show a success message
@@ -103,17 +107,20 @@ class CustomerCrudController extends CrudController
 
         // register any Model Events defined on fields
         $this->crud->registerFieldEvents();
-
         $user = $this->crud->getCurrentEntry()->user;
-        $user->name = request()->input('name');
-        $user->email = request()->input('email');
-        $user->save();
+        $item = null;
+        DB::transaction(function () use (&$item, &$user, &$request) {
+            $user->name = request()->input('name');
+            $user->email = request()->input('email');
+            $user->save();
 
-        // update the row in the db
-        $item = $this->crud->update(
-            $request->get($this->crud->model->getKeyName()),
-            ['active' => request('active')]
-        );
+            // update the row in the db
+            $item = $this->crud->update(
+                $request->get($this->crud->model->getKeyName()),
+                ['active' => request('active')]
+            );
+        });
+
         $this->data['entry'] = $this->crud->entry = $item;
 
         // show a success message
