@@ -18,6 +18,8 @@ use Illuminate\Support\Str;
 
 class DatabaseSeeder extends Seeder
 {
+
+
     public function run()
     {
         $admin = User::create([
@@ -25,92 +27,20 @@ class DatabaseSeeder extends Seeder
             'email'    => 'admin@rikaz.com',
             'password' => bcrypt('12345678'),
         ]);
-        $users = User::factory(10)->create();
-        $supplier = Supplier::create([
-            'user_id' => $users[0]->id
+        $this->call([
+            UserSeeder::class,
+            CategorySeeder::class,
+            SupplierSeeder::class,
+            CustomerSeeder::class,
+            PermissonSeeder::class,
+            ItemsSeeder::class,
+            ExportSeeder::class,
+            ImportSeeder::class
 
         ]);
-        $supplier1 = Supplier::create([
-            'user_id' => $users[1]->id,
-        ]);
-        $customer = Customer::create([
-            'user_id' => $users[0]->id
-        ]);
-        $customer1 = Customer::create([
-            'user_id' => $users[1]->id
-        ]);
-        $adminRole = Role::create([
-            'name'     => 'admin',
-            'guard_name'    => 'web',
 
-        ]);
-        Role::create([
-            'name'     => 'edit-item',
-            'guard_name'    => 'web',
 
-        ]);
-        $editPer = Permission::create([
-            'name'     => 'edit-item',
-            'guard_name'    => 'web',
-        ]);
-        $changePer = Permission::create([
-            'name'     => 'changeStateItem',
-            'guard_name'    => 'web',
-        ]);
-        $changePer = Permission::create([
-            'name'     => 'edit-import',
-            'guard_name'    => 'web',
-        ]);
-        $changePer = Permission::create([
-            'name'     => 'edit-export',
-            'guard_name'    => 'web',
-        ]);
-        $changePer = Permission::create([
-            'name'     => 'edit-customer',
-            'guard_name'    => 'web',
-        ]);
-        $changePer = Permission::create([
-            'name'     => 'edit-supplier',
-            'guard_name'    => 'web',
-        ]);
-        $adminRole->givePermissionTo('changeStateItem');
-        $adminRole->givePermissionTo('edit-item');
-        $adminRole->givePermissionTo('edit-import');
-        $adminRole->givePermissionTo('edit-export');
-        $adminRole->givePermissionTo('edit-customer');
-        $adminRole->givePermissionTo('edit-supplier');
 
         $admin->assignRole('admin');
-        $category = Category::factory(2)->create();
-        $items = Item::factory(5)->create(['category_id' => $category[0]]);
-        $items2 = Item::factory(5)->create(['category_id' => $category[1]]);
-
-        for ($i = 0; $i < 5; $i++) {
-
-            Import::factory(4)->create([
-                'item_id' => $items[$i],
-                'supplier_id' => $supplier->id
-            ]);
-        }
-        for ($i = 0; $i < 5; $i++) {
-
-            Import::factory(4)->create([
-                'item_id' => $items2[$i],
-                'supplier_id' => $supplier1->id
-            ]);
-        }
-        for ($i = 0; $i < 5; $i++) {
-            Export::factory(4)->create([
-                'item_id' => $items[$i],
-                'customer_id' => $customer->id
-            ]);
-        }
-
-        for ($i = 0; $i < 5; $i++) {
-            Export::factory(4)->create([
-                'item_id' => $items2[$i],
-                'customer_id' => $customer1->id
-            ]);
-        }
     }
 }

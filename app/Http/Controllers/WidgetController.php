@@ -12,6 +12,7 @@ class WidgetController extends Controller
 {
     public function disableditems()
     {
+        // dd(Item::where('active', false)->get());
         return Item::where('active', false)->get();
     }
     public function itemWithExportMport()

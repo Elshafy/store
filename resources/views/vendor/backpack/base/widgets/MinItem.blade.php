@@ -4,7 +4,7 @@
     <div class="row">
         <div class="col-lg-12">
             <div class="card">
-                <div class="card-header"><i class="fa fa-align-justify"></i> disabled Items</div>
+                <div class="card-header"><i class="fa fa-align-justify"></i> min Item</div>
                 <div class="card-body">
                     <table class="table table-responsive-sm table-bordered table-striped table-hover table-sm">
                         <thead>
