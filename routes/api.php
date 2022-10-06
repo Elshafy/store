@@ -18,13 +18,13 @@ use Illuminate\Support\Facades\Route;
 
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
-Route::get('customer/{id}', [ReportController::class, 'customerRecord'])->whereNumber('id');
-Route::get('supplier/{id}', [ReportController::class, 'supplierRecord'])->whereNumber('id');
+// Route::get('customer/{id}', [ReportController::class, 'customerRecord'])->whereNumber('id');
+// Route::get('supplier/{id}', [ReportController::class, 'supplierRecord'])->whereNumber('id');
 
 
 Route::group(['middleware' => ['auth:sanctum']], function () {
-    Route::get('customer/{id}', [ReportController::class, 'customerRecord'])->whereNumber('id');
-    Route::get('supplier/{id}', [ReportController::class, 'supplierRecord'])->whereNumber('id');
+    Route::get('customer', [ReportController::class, 'customerRecord'])->whereNumber('id');
+    Route::get('supplier', [ReportController::class, 'supplierRecord'])->whereNumber('id');
     Route::post('/logout', [AuthController::class, 'logout']);
 });
 
