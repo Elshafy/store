@@ -15,6 +15,7 @@
                             </tr>
                         </thead>
                         <tbody>
+                            {{-- @dd($widget['content']['items']) --}}
                             @foreach ($widget['content']['items'] as $item)
                                 <tr>
                                     <td>{{ $item->category->name }}</td>

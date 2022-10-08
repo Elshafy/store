@@ -32,7 +32,7 @@ class CustomerRequest extends FormRequest
 
         return [
             'name' => 'required|min:3|max:255',
-            'phone' => 'min:9|max:255',
+            'phone' => 'required|min:9|max:255',
             'email' => ['required', Rule::unique('users', 'email')->ignore($custmer->user_id)],
             'active' => 'required|boolean'
         ];

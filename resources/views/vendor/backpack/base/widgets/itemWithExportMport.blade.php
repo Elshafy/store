@@ -21,8 +21,8 @@
                                 {{-- @dd($item) --}}
                                 <tr>
                                     <td>{{ $item->name }}</td>
-                                    <td>{{ $item->exports->sum('amount') }}</td>
-                                    <td>{{ $item->imports->sum('amount') }}</td>
+                                    <td>{{ $item->exports_sum_amount }}</td>
+                                    <td>{{ $item->imports_sum_amount }}</td>
                                 </tr>
                             @endforeach
 

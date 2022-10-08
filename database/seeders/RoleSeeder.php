@@ -2,10 +2,10 @@
 
 namespace Database\Seeders;
 
-use App\Models\User;
+use Backpack\PermissionManager\app\Models\Role;
 use Illuminate\Database\Seeder;
 
-class UserSeeder extends Seeder
+class RoleSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -14,7 +14,8 @@ class UserSeeder extends Seeder
      */
     public function run()
     {
+        //
 
-        User::factory(10)->create();
+
     }
 }
