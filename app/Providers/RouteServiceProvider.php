@@ -56,6 +56,14 @@ class RouteServiceProvider extends ServiceProvider
      */
     protected function configureRateLimiting()
     {
+        // in some ServiceProvider, AppServiceProvider for example
+
+        $this->app->bind(
+            \Backpack\PermissionManager\app\Http\Controllers\UserCrudController::class, //this is package controller
+            \App\Http\Controllers\Admin\UserCrudController::class //this should be your own controller
+        );
+
+        // this tells Laravel that when UserCrudController is requested, your own UserCrudController should be served.
         RateLimiter::for('api', function (Request $request) {
             return Limit::perMinute(60)->by(optional($request->user())->id ?: $request->ip());
         });
